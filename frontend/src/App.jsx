@@ -1,16 +1,12 @@
 import React from 'react'
+import EditorComponent from './components/EditorComponent'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Real-Time Code Editor</h1>
-        <p>
-          Frontend initialized successfully. Next steps: implement CodeMirror 6 editor
-          and WebSocket connection.
-        </p>
-      </header>
-    </div>
+    <main className="App">
+      <h1>Real-Time Code Editor</h1>
+      <EditorComponent documentId="default" />
+    </main>
   )
 }
 

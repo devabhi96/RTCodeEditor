@@ -6,9 +6,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Date;
+import java.util.HexFormat;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 public class JwtService {
 
@@ -56,7 +56,7 @@ public class JwtService {
     }
 
     private Key getSignKey() {
-        byte[] keyBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(SECRET_KEY);
+        byte[] keyBytes = HexFormat.of().parseHex(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -77,6 +77,6 @@ public class JwtService {
             String username = extractUsername(token);
             return new VerifiedIdentity(username);
         }
-        throw new RuntimeException("Invalid or expired token");
+        throw new IllegalArgumentException("Invalid or expired token");
     }
 }

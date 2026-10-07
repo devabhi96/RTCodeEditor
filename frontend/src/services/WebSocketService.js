@@ -1,47 +1,31 @@
 import { Client } from '@stomp/stompjs';
-import { SockJS } from 'sockjs-client';
-import { useEffect, useState } from 'react';
+import SockJS from 'sockjs-client';
+import { useCallback, useEffect, useState } from 'react';
 
 let stompClient = null;
 
-export const connectWebSocket = (onMessageReceived, onConnected, onDisconnected) => {
-  const token = localStorage.getItem('token'); // Assuming JWT is stored in localStorage
-
-  const ws = new SockJS('http://localhost:8080/ws'); // Backend URL
-  stompClient = new Client({
-    webSocketFactory: () => ws,
-    debug: true,
-    headers: {
-      Authorization: `Bearer ${token}`
-    },
-    brokerURL: 'ws://localhost:8080/ws',
+export const connectWebSocket = (onConnected, onDisconnected) => {
+  const client = new Client({
+    webSocketFactory: () => new SockJS(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080'}/ws`),
     reconnectDelay: 5000,
     heartbeatIncoming: 4000,
     heartbeatOutgoing: 4000,
   });
+  stompClient = client;
+  client.onConnect = onConnected;
+  client.onWebSocketClose = onDisconnected;
+  client.onStompError = onDisconnected;
+  client.onDisconnect = onDisconnected;
+  client.activate();
 
-  stompClient.onConnect = (frame) => {
-    console.log('Connected: ' + frame);
-    onConnected(frame);
-  };
-
-  stompClient.onDisconnect = (frame) => {
-    console.log('Disconnected: ' + frame);
-    onDisconnected(frame);
-  };
-
-  stompClient.activate();
-
-  // Return a function to allow unsubscribing
   return () => {
-    if (stompClient) {
-      stompClient.deactivate();
-    }
+    if (stompClient === client) stompClient = null;
+    void client.deactivate();
   };
 };
 
 export const subscribeToTopic = (topic, callback) => {
-  if (stompClient && stompClient.connected) {
+  if (stompClient?.connected) {
     return stompClient.subscribe(topic, (message) => {
       callback(JSON.parse(message.body));
     });
@@ -50,16 +34,33 @@ export const subscribeToTopic = (topic, callback) => {
 };
 
 export const sendToApp = (destination, payload) => {
-  if (stompClient && stompClient.connected) {
+  if (stompClient?.connected) {
     stompClient.publish({
-      destination: `/app${destination}`,
+      destination: destination.startsWith('/app/') ? destination : `/app${destination}`,
       body: JSON.stringify(payload)
     });
   }
 };
 
-export const disconnectWebSocket = () => {
-  if (stompClient) {
-    stompClient.deactivate();
-  }
+export const useWebSocketService = () => {
+  const [connected, setConnected] = useState(false);
+
+  useEffect(() => {
+    const disconnect = connectWebSocket(
+      () => setConnected(true),
+      () => setConnected(false)
+    );
+    return () => {
+      disconnect();
+      setConnected(false);
+    };
+  }, []);
+
+  const sendMessage = useCallback((destination, payload) => {
+    sendToApp(destination, payload);
+  }, []);
+
+  const subscribe = useCallback((topic, callback) => subscribeToTopic(topic, callback), []);
+
+  return { connected, sendMessage, subscribeToTopic: subscribe };
 };

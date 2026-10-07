@@ -18,7 +18,7 @@ const EditorComponent = ({ documentId }) => {
       });
 
       return () => {
-        subscription.unsubscribe();
+        subscription?.unsubscribe();
       };
     }
   }, [connected, documentId, subscribeToTopic]);
@@ -29,7 +29,7 @@ const EditorComponent = ({ documentId }) => {
 
     // Send content to server via WebSocket (last-write-wins for MVP)
     if (connected) {
-      sendMessage(`/app/document.update`, {
+      sendMessage(`/document.update`, {
         documentId: documentId,
         content: newContent,
         timestamp: new Date().toISOString()
