@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import EditorComponent from './components/EditorComponent'
+import ExecutionConsole from './components/ExecutionConsole'
 import { isValidDocumentId } from './services/documentRoom'
 import './App.css'
 
@@ -15,6 +16,7 @@ function App() {
   const [roomDraft, setRoomDraft] = useState(readDocumentIdFromUrl)
   const [roomError, setRoomError] = useState('')
   const [copyStatus, setCopyStatus] = useState('')
+  const [code, setCode] = useState('')
 
   useEffect(() => {
     const url = new URL(window.location.href)
@@ -114,7 +116,8 @@ function App() {
         </div>
       </section>
 
-      <EditorComponent documentId={documentId} />
+      <EditorComponent documentId={documentId} onCodeChange={setCode} />
+      <ExecutionConsole documentId={documentId} currentCode={code} />
     </main>
   )
 }

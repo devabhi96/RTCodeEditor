@@ -71,6 +71,9 @@ export const createYjsDocument = (callbacks, { updateDebounceMs = DEFAULT_UPDATE
     encodeLocalAwareness() {
       return encodeAwarenessUpdate(awareness, [doc.clientID]);
     },
+    getCurrentCode() {
+      return this.text.toString();
+    },
     destroy() {
       if (destroyed) return;
       flushDocumentUpdates();

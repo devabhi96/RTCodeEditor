@@ -1,0 +1,126 @@
+.execution-console {
+  border: 1px solid #d9e1ed;
+  border-radius: 8px;
+  background: #fff;
+  margin-top: 16px;
+  padding: 16px;
+}
+
+.execution-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.execution-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.execution-controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.language-select {
+  padding: 8px 12px;
+  border: 1px solid #cbd5e3;
+  border-radius: 4px;
+  background: #fff;
+  font-size: 0.9rem;
+}
+
+.button {
+  min-height: 36px;
+  padding: 8px 12px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+.button-primary {
+  background: #315fd2;
+  color: #fff;
+}
+
+.button-primary:hover {
+  background: #264fb9;
+}
+
+.button-secondary {
+  border-color: #d4dceb;
+  background: #f8faff;
+  color: #35415a;
+}
+
+.button-secondary:hover {
+  background: #eef3fb;
+}
+
+.button-loading {
+  background: #cccccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.execution-output {
+  margin-top: 12px;
+}
+
+.execution-loading {
+  color: #66738b;
+  font-style: italic;
+  padding: 12px;
+  text-align: center;
+}
+
+.execution-section {
+  margin-bottom: 12px;
+}
+
+.execution-section h4 {
+  margin: 0 0 4px 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #495057;
+}
+
+.execution-stdout,
+.execution-stderr {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  padding: 8px;
+  overflow: auto;
+  max-height: 200px;
+  font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.85rem;
+  white-space: pre-wrap;
+}
+
+.execution-stderr {
+  background: #fff3cd;
+  border-color: #ffeaa7;
+  color: #856404;
+}
+
+.execution-empty {
+  color: #6c757d;
+  font-style: italic;
+  margin: 8px 0;
+}
+
+.execution-error {
+  color: #d32f2f;
+  background: #ffebee;
+  border: 1px solid #ffcdd2;
+  border-radius: 4px;
+  padding: 8px;
+  margin-top: 8px;
+}

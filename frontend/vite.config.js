@@ -8,7 +8,7 @@ export default defineConfig({
     global: 'globalThis',
   },
   server: {
-    port: 5173,
+    port: 6000,
     strictPort: true,
   },
   preview: {

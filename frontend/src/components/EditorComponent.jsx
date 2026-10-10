@@ -36,7 +36,7 @@ const createGuest = (clientId) => {
   };
 };
 
-const EditorComponent = ({ documentId }) => {
+const EditorComponent = ({ documentId, onCodeChange = () => {} }) => {
   const editorHostRef = useRef(null);
   const editorViewRef = useRef(null);
   const yjsRef = useRef(null);
@@ -51,6 +51,10 @@ const EditorComponent = ({ documentId }) => {
         if (hasPendingUpdate) queueDocumentUpdate(pendingUpdatesRef.current, documentId, update);
         if (!sendBytes('/document.update', documentId, update) && !hasPendingUpdate) {
           queueDocumentUpdate(pendingUpdatesRef.current, documentId, update);
+        }
+        // Notify parent of code change (local edit)
+        if (onCodeChange) {
+          onCodeChange(yjs.text.toString());
         }
       },
       onAwarenessUpdate: (update) => {
