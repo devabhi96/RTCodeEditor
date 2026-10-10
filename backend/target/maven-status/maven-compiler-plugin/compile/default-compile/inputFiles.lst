@@ -1,5 +1,9 @@
 C:\Users\ASUS\OneDrive\Desktop\Spring boot projects\RTCodeEditor\RTCodeEditor\backend\src\main\java\com\rtcodeeditor\backend\config\WebSocketConfig.java
+C:\Users\ASUS\OneDrive\Desktop\Spring boot projects\RTCodeEditor\RTCodeEditor\backend\src\main\java\com\rtcodeeditor\backend\model\AwarenessUpdate.java
 C:\Users\ASUS\OneDrive\Desktop\Spring boot projects\RTCodeEditor\RTCodeEditor\backend\src\main\java\com\rtcodeeditor\backend\model\Document.java
+C:\Users\ASUS\OneDrive\Desktop\Spring boot projects\RTCodeEditor\RTCodeEditor\backend\src\main\java\com\rtcodeeditor\backend\model\DocumentState.java
+C:\Users\ASUS\OneDrive\Desktop\Spring boot projects\RTCodeEditor\RTCodeEditor\backend\src\main\java\com\rtcodeeditor\backend\model\DocumentUpdate.java
+C:\Users\ASUS\OneDrive\Desktop\Spring boot projects\RTCodeEditor\RTCodeEditor\backend\src\main\java\com\rtcodeeditor\backend\repository\DocumentStateRepository.java
 C:\Users\ASUS\OneDrive\Desktop\Spring boot projects\RTCodeEditor\RTCodeEditor\backend\src\main\java\com\rtcodeeditor\backend\RtCodeEditorBackendApplication.java
 C:\Users\ASUS\OneDrive\Desktop\Spring boot projects\RTCodeEditor\RTCodeEditor\backend\src\main\java\com\rtcodeeditor\backend\security\JwtService.java
 C:\Users\ASUS\OneDrive\Desktop\Spring boot projects\RTCodeEditor\RTCodeEditor\backend\src\main\java\com\rtcodeeditor\backend\security\StompHandshakeInterceptor.java

@@ -1,46 +1,43 @@
 package com.rtcodeeditor.backend.service;
 
-import com.rtcodeeditor.backend.model.Document;
+import com.rtcodeeditor.backend.model.DocumentState;
+import com.rtcodeeditor.backend.repository.DocumentStateRepository;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-/**
- * In-memory document service for Phase 1
- * In later phases, this would use a database repository
- */
 @Service
 public class DocumentService {
-    
-    // In-memory storage for documents
-    // Key: documentId, Value: Document content
-    private final Map<String, String> documents = new ConcurrentHashMap<>();
-    
-    /**
-     * Get document content by ID
-     * @param documentId The ID of the document
-     * @return The document content, or empty string if not found
-     */
-    public String getDocumentContent(String documentId) {
-        return documents.getOrDefault(documentId, "");
+
+    private final DocumentStateRepository documentStateRepository;
+
+    public DocumentService(DocumentStateRepository documentStateRepository) {
+        this.documentStateRepository = documentStateRepository;
     }
-    
-    /**
-     * Save or update document content
-     * @param documentId The ID of the document
-     * @param content The content to save
-     */
-    public void saveDocumentContent(String documentId, String content) {
-        documents.put(documentId, content);
+
+    @Transactional(readOnly = true)
+    public byte[] getDocumentState(String documentId) {
+        List<DocumentState> updates = documentStateRepository.findAllByDocumentIdOrderByIdAsc(documentId);
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        for (DocumentState update : updates) {
+            byte[] bytes = update.getStateUpdate();
+            output.write(bytes.length);
+            output.write(bytes.length >>> 8);
+            output.write(bytes.length >>> 16);
+            output.write(bytes.length >>> 24);
+            try {
+                output.write(bytes);
+            } catch (IOException exception) {
+                throw new IllegalStateException(exception);
+            }
+        }
+        return output.toByteArray();
     }
-    
-    /**
-     * Check if document exists
-     * @param documentId The ID of the document
-     * @return true if document exists
-     */
-    public boolean documentExists(String documentId) {
-        return documents.containsKey(documentId);
+
+    @Transactional
+    public void saveDocumentUpdate(String documentId, byte[] update) {
+        documentStateRepository.appendUpdate(documentId, update);
     }
 }
